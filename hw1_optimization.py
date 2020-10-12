@@ -1,20 +1,20 @@
-from collections.abc import Callable
+from typing import Callable, Tuple, Dict
 
-
-# Пусть дана функция (оракул) f
-# Со следующим интерфейсом
-# def f(x):
-#     return f(x), f'(x)
-# Например, оракул для квадратичной фунции x^2/2
-def f(x):
-    return x * x / 2, x
+from optimize import Brent
 
 
 # Требуется реализовать метод: который будет находить минимум функции на отрезке [a,b]
-def optimize(function: Callable[[float], float], a: float, b: float, eps: float = 1e-8):
-    pass
+def optimize(
+        oracle: Callable[[float], Tuple[float, float]], a: float, b: float, eps: float = 1e-8,
+        optimizer_params: Dict = None
+) -> float:
+    if optimizer_params is None:
+        optimizer_params = {}
+    optimize_function = Brent(**optimizer_params).get_optimize_function()
+    return optimize_function(oracle, a, b, eps)
 
-# Задание состоит из 2-х частей— реализовать любой алгоритм оптимизации по выбору
+
+# Задание состоит из 2-х частей — реализовать любой алгоритм оптимизации по выбору
 # Провести анализ работы алгоритма на нескольких функция, построить графики сходимости вида:
 # кол-во итераций vs log(точность); время работы vs log(точность)
 # Изучить, как метод будет работать на неунимодальных функций и привести примеры, подтверждающие поведение

@@ -1,4 +1,4 @@
-from oracle import unimodal
-from .oracle_wrapper import OracleWrapper
+from .oracle import Oracle
+from .unimodal import *
 
-__all__ = ["unimodal", OracleWrapper]
+__all__ = ["unimodal", "Oracle"]

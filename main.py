@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import numpy
 
 from optimize import IBrent, BrentMomo, BrentNumericalRecipes
-from oracle import Oracle, unimodal
+from oracle import Oracle, unimodal, continuous
 from utils import CountCallsWrapper
 
 LINE_DELIMITER = "=" * 100
@@ -13,19 +13,25 @@ LINE_DELIMITER = "=" * 100
 class OptimizeParameters:
     left_bound: float
     right_bound: float
-    epsilon: float = 1e-8
+
+
+def _round_by_epsilon(number: float, epsilon: float) -> float:
+    """Assume epsilon=1e-x
+    """
+    eps = int(numpy.log10(epsilon))
+    return round(number, -eps)
 
 
 def test_optimize(brent: IBrent, params: OptimizeParameters, oracle: Oracle):
     oracle_function = oracle.get_oracle()
     count_call_wrapper = CountCallsWrapper(oracle_function)
     optimize_result = brent.brent_with_derivatives(
-        count_call_wrapper, params.left_bound, params.right_bound, params.epsilon
+        count_call_wrapper, params.left_bound, params.right_bound, oracle.get_eps()
     )
-    x_min = optimize_result.x_min
+    x_min = _round_by_epsilon(optimize_result.x_min, oracle.get_eps())
     x_min_true = oracle.get_x_min()
     error = numpy.abs(x_min - oracle.get_x_min())
-    error = 0 if error < params.epsilon else error
+    error = 0 if error < oracle.get_eps() else _round_by_epsilon(error, oracle.get_eps())
     print(LINE_DELIMITER)
     print(f"Optimized function: {oracle.get_name()}\n"
           f"Reached minimum: x={x_min} (f(x), f'(x) = {oracle_function(x_min)})\n"
@@ -42,7 +48,12 @@ def main():
         (OptimizeParameters(-10, 10), unimodal.Quadratic(5)),
         (OptimizeParameters(0, 3), unimodal.Function4()),
         (OptimizeParameters(-1, 2), unimodal.Function13()),
-        (OptimizeParameters(0, 6), unimodal.Function18())
+        (OptimizeParameters(0, 6), unimodal.Function18()),
+        (OptimizeParameters(2.7, 7.5), continuous.Function2()),
+        (OptimizeParameters(0, 2), continuous.Function5()),
+        (OptimizeParameters(-10, 10), continuous.Function6()),
+        (OptimizeParameters(0, 10), continuous.Function10()),
+        (OptimizeParameters(-5, 5), continuous.Function15())
     ]
 
     max_iterations = 20

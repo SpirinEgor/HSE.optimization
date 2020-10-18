@@ -4,9 +4,10 @@ import numpy
 
 from oracle import Oracle
 
-__all__ = ["Quadratic", "Example", "Function4", "Function13", "Function18"]
-
 from utils import get_derivative_in_point
+
+
+__all__ = ["Quadratic", "Example", "Function4", "Function13", "Function18"]
 
 
 class Example(Oracle):
@@ -44,6 +45,7 @@ class Function4(Oracle):
     _name = "-(16x^2 - 24x + 5) * e^{-x}"
     _x_min = 2.868034
     _f_x_min = -3.85045
+    _eps = 1e-6
 
     @staticmethod
     def _f(x: float) -> float:

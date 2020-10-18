@@ -3,38 +3,33 @@ from typing import Callable, Tuple
 import numpy
 
 from optimize import OptimizeResult
+from optimize.brent import IBrent
 from utils import linear_approximation
 
 
-class Brent:
-
-    _golden_value = 0.381966
-
-    def __init__(self, max_iterations: int = 1e5):
-        self._max_iterations = max_iterations
+class BrentMomo(IBrent):
+    """http://www.machinelearning.ru/wiki/images/a/a8/MOMO12_min1d.pdf
+    """
 
     def brent_with_derivatives(
             self, oracle: Callable[[float], Tuple[float, float]], a: float, c: float, eps: float
     ) -> OptimizeResult:
-        """http://www.machinelearning.ru/wiki/images/a/a8/MOMO12_min1d.pdf
-        """
-        _n_iterations = 0
         _history = []
 
         # Init block
-        first_min = second_min = prev_sec_min = (a + c) / 2
-        f_first_min, df_first_min = oracle(first_min)
-        f_second_min, df_second_min = f_first_min, df_first_min
-        f_prev_sec_min, df_prev_sec_min = f_first_min, df_first_min
+        a, c = (a, c) if a < c else (c, a)
         current_step = previous_step = c - a
+        init_xs, init_f_xs, init_df_xs = self._init_brent_variables(oracle, a, c)
+        first_min, second_min, third_min = init_xs
+        f_first_min, f_second_min, f_third_min = init_f_xs
+        df_first_min, df_second_min, df_third_min = init_df_xs
 
-        while _n_iterations < self._max_iterations:
-            _n_iterations += 1
+        for n_iter in range(self._max_iterations):
             _history.append(first_min)
 
             # handle convergence:
             if numpy.abs(df_first_min) <= eps or current_step <= eps:
-                return OptimizeResult(first_min, _history, _n_iterations)
+                return OptimizeResult(first_min, _history, n_iter)
 
             temp_step = previous_step
             previous_step = current_step
@@ -49,8 +44,8 @@ class Brent:
                     current_step = numpy.abs(next_min - first_min)
 
             # second parabola
-            if first_min != prev_sec_min and df_first_min != df_prev_sec_min:
-                possible_min = linear_approximation(first_min, df_first_min, prev_sec_min, df_prev_sec_min)
+            if first_min != third_min and df_first_min != df_third_min:
+                possible_min = linear_approximation(first_min, df_first_min, third_min, df_third_min)
                 if a + eps <= possible_min <= c - eps and numpy.abs(possible_min - first_min) < previous_step / 2:
                     if next_min is None or numpy.abs(possible_min - first_min) < current_step:
                         next_min = possible_min
@@ -73,18 +68,15 @@ class Brent:
             if f_next_min <= f_first_min:
                 a, c = (first_min, c) if next_min >= first_min else (a, first_min)
 
-                prev_sec_min, f_prev_sec_min, df_prev_sec_min = second_min, f_second_min, df_second_min
+                third_min, f_third_min, df_third_min = second_min, f_second_min, df_second_min
                 second_min, f_second_min, df_second_min = first_min, f_first_min, df_first_min
                 first_min, f_first_min, df_first_min = next_min, f_next_min, df_next_min
             else:
                 a, c = (a, next_min) if next_min >= first_min else (next_min, c)
                 if f_next_min <= f_second_min or second_min == first_min:
-                    prev_sec_min, f_prev_sec_min, df_prev_sec_min = second_min, f_second_min, df_second_min
+                    third_min, f_third_min, df_third_min = second_min, f_second_min, df_second_min
                     second_min, f_second_min, df_second_min = next_min, f_next_min, df_next_min
-                elif f_next_min <= f_prev_sec_min or prev_sec_min == first_min or prev_sec_min == second_min:
-                    prev_sec_min, f_prev_sec_min, df_prev_sec_min = next_min, f_next_min, df_next_min
+                elif f_next_min <= f_third_min or third_min == first_min or third_min == second_min:
+                    third_min, f_third_min, df_third_min = next_min, f_next_min, df_next_min
 
-        return OptimizeResult(first_min, _history, _n_iterations)
-
-    def get_optimize_function(self):
-        return self.brent_with_derivatives
+        return OptimizeResult(first_min, _history, self._max_iterations)

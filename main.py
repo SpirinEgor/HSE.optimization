@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 import numpy
 
-from optimize import Brent
+from optimize import IBrent, BrentMomo, BrentNumericalRecipes
 from oracle import Oracle, unimodal
 from utils import CountCallsWrapper
 
@@ -16,7 +16,7 @@ class OptimizeParameters:
     epsilon: float = 1e-8
 
 
-def test_optimize(brent: Brent, params: OptimizeParameters, oracle: Oracle):
+def test_optimize(brent: IBrent, params: OptimizeParameters, oracle: Oracle):
     oracle_function = oracle.get_oracle()
     count_call_wrapper = CountCallsWrapper(oracle_function)
     optimize_result = brent.brent_with_derivatives(
@@ -45,8 +45,9 @@ def main():
         (OptimizeParameters(0, 6), unimodal.Function18())
     ]
 
-    max_iterations = 100_000
-    brent = Brent(max_iterations)
+    max_iterations = 20
+    # brent = BrentMomo(max_iterations)
+    brent = BrentNumericalRecipes(max_iterations)
 
     for optimizer_params, oracle in test_samples:
         test_optimize(brent, optimizer_params, oracle)

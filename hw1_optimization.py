@@ -1,6 +1,6 @@
 from typing import Callable, Tuple, Dict
 
-from optimize import Brent, OptimizeResult
+from optimize import BrentMomo, OptimizeResult
 
 
 # Требуется реализовать метод: который будет находить минимум функции на отрезке [a,b]
@@ -10,7 +10,7 @@ def optimize(
 ) -> float:
     if optimizer_params is None:
         optimizer_params = {}
-    optimize_function = Brent(**optimizer_params).get_optimize_function()
+    optimize_function = BrentMomo(**optimizer_params).get_optimize_function()
     optimize_result: OptimizeResult = optimize_function(oracle, a, b, eps)
     return optimize_result.x_min
 

@@ -1,18 +1,10 @@
-from dataclasses import dataclass
-
 import numpy
 
-from optimize import IBrent, BrentMomo, BrentNumericalRecipes
+from optimize import IBrent, BrentNumericalRecipes
 from oracle import Oracle, unimodal, continuous
-from utils import CountCallsWrapper
+from utils import CountCallsWrapper, OptimizeParameters
 
 LINE_DELIMITER = "=" * 100
-
-
-@dataclass
-class OptimizeParameters:
-    left_bound: float
-    right_bound: float
 
 
 def _round_by_epsilon(number: float, epsilon: float) -> float:
@@ -46,7 +38,7 @@ def main():
     test_samples = [
         (OptimizeParameters(-10, 10), unimodal.Example()),
         (OptimizeParameters(-10, 10), unimodal.Quadratic(5)),
-        (OptimizeParameters(0, 3), unimodal.Function4()),
+        (OptimizeParameters(0, 10), unimodal.Function4()),
         (OptimizeParameters(-1, 2), unimodal.Function13()),
         (OptimizeParameters(0, 6), unimodal.Function18()),
         (OptimizeParameters(2.7, 7.5), continuous.Function2()),

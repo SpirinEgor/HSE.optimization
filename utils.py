@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Callable, Tuple
 
 
@@ -23,3 +24,9 @@ def linear_approximation(x1: float, y1: float, x2: float, y2: float) -> float:
 
 def get_derivative_in_point(f: Callable[[float], float], x: float, delta: float = 1e-8) -> float:
     return (f(x + delta) - f(x)) / delta
+
+
+@dataclass
+class OptimizeParameters:
+    left_bound: float
+    right_bound: float

@@ -29,4 +29,4 @@ def optimize(
 
 ### Решение
 1. Реализация необходимого метода находится в [hw1_optimization.py](hw1_optimization.py)
-2. ipynb отчёт находится в [report/1d_optimization.ipynb](report/1d_optimization.py)
+2. ipynb отчёт находится в [report/1d_optimization.ipynb](report/1d_optimization.ipynb)

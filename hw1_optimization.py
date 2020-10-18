@@ -1,18 +1,20 @@
 from typing import Callable, Tuple, Dict
 
-from optimize import BrentMomo, OptimizeResult
+import numpy
+
+from optimize import BrentNumericalRecipes, OptimizeResult
 
 
 # Требуется реализовать метод: который будет находить минимум функции на отрезке [a,b]
 def optimize(
         oracle: Callable[[float], Tuple[float, float]], a: float, b: float, eps: float = 1e-8,
         optimizer_params: Dict = None
-) -> float:
+) -> numpy.ndarray:
     if optimizer_params is None:
         optimizer_params = {}
-    optimize_function = BrentMomo(**optimizer_params).get_optimize_function()
+    optimize_function = BrentNumericalRecipes(**optimizer_params).get_optimize_function()
     optimize_result: OptimizeResult = optimize_function(oracle, a, b, eps)
-    return optimize_result.x_min
+    return numpy.array(optimize_result.x_min)
 
 
 # Задание состоит из 2-х частей — реализовать любой алгоритм оптимизации по выбору

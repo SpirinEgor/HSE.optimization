@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Callable, Tuple
 
-from optimize import OptimizeResult
+from assignment_1.optimize import OptimizeResult
 
 
 class IBrent(ABC):

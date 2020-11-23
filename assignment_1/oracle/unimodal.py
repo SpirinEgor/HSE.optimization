@@ -2,9 +2,9 @@ from typing import Callable, Tuple
 
 import numpy
 
-from oracle import Oracle
+from assignment_1.oracle import Oracle
 
-from utils import get_derivative_in_point
+from assignment_1.utils import get_derivative_in_point
 
 
 __all__ = ["Quadratic", "Example", "Function4", "Function13", "Function18"]

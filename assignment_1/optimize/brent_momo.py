@@ -2,9 +2,9 @@ from typing import Callable, Tuple
 
 import numpy
 
-from optimize import OptimizeResult
-from optimize.brent import IBrent
-from utils import linear_approximation
+from assignment_1.optimize import OptimizeResult
+from assignment_1.optimize.brent import IBrent
+from assignment_1.utils import linear_approximation
 
 
 class BrentMomo(IBrent):

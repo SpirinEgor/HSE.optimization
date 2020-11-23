@@ -2,8 +2,8 @@ from typing import Callable, Tuple
 
 from numpy import abs, sign
 
-from optimize import OptimizeResult
-from optimize.brent import IBrent
+from assignment_1.optimize import OptimizeResult
+from assignment_1.optimize.brent import IBrent
 
 
 class BrentNumericalRecipes(IBrent):

@@ -2,8 +2,8 @@ from typing import Callable, Tuple
 
 import numpy
 
-from oracle import Oracle
-from utils import get_derivative_in_point
+from assignment_1.oracle import Oracle
+from assignment_1.utils import get_derivative_in_point
 
 
 __all__ = ["Function2", "Function5", "Function6", "Function10", "Function15"]

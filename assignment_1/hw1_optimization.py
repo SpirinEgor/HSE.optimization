@@ -2,7 +2,7 @@ from typing import Callable, Tuple, Dict
 
 import numpy
 
-from optimize import BrentNumericalRecipes, OptimizeResult
+from assignment_1.optimize import BrentNumericalRecipes, OptimizeResult
 
 
 # Требуется реализовать метод: который будет находить минимум функции на отрезке [a,b]

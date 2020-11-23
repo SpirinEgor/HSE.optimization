@@ -1,8 +1,9 @@
 import numpy
 
-from optimize import IBrent, BrentNumericalRecipes
-from oracle import Oracle, unimodal, continuous
-from utils import CountCallsWrapper, OptimizeParameters
+from assignment_1.optimize import IBrent, BrentNumericalRecipes
+from assignment_1.oracle import Oracle, continuous
+from assignment_1.oracle import unimodal
+from assignment_1.utils import CountCallsWrapper, OptimizeParameters
 
 LINE_DELIMITER = "=" * 100
 

@@ -1,5 +1,5 @@
 from time import time
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Iterable
 
 import numpy
 import plotly.graph_objects as go
@@ -11,7 +11,15 @@ from assignment_2.optimize import gradient_descent_optimization, OptimizationSte
 from assignment_2.oracles import AbstractOracle
 
 
-def experiment_graphic_builder(results: Dict[str, List[OptimizationStep]], name: str, true_minimum: float) -> go.Figure:
+def moving_average(array: Iterable[float], window: int = 25) -> numpy.ndarray:
+    cum_sums = numpy.cumsum(array)
+    cum_sums[window:] = cum_sums[window:] - cum_sums[:-window]
+    return cum_sums[window - 1 :] / window
+
+
+def experiment_graphic_builder(
+    results: Dict[str, List[OptimizationStep]], name: str, true_minimum: float, smooth: bool = False
+) -> go.Figure:
     figure = make_subplots(
         rows=3,
         cols=2,
@@ -22,7 +30,7 @@ def experiment_graphic_builder(results: Dict[str, List[OptimizationStep]], name:
     row_names = ["time (ms)", "# oracle calls", "# iterations"]
     for row_id in range(3):
         for col_id in range(2):
-            figure.update_yaxes(type="log", exponentformat="e", row=row_id + 1, col=col_id + 1)
+            figure.update_yaxes(exponentformat="e", row=row_id + 1, col=col_id + 1)
             figure.update_xaxes(title=row_names[row_id % 3], row=row_id + 1, col=col_id + 1)
 
     color_iter = iter(COLORS)
@@ -36,6 +44,9 @@ def experiment_graphic_builder(results: Dict[str, List[OptimizationStep]], name:
         color = next(color_iter)
         for row_id, x_values in enumerate([times, oracle_calls, iterations]):
             for col_id, y_values in enumerate([wrt_minimum, wrt_start]):
+                if col_id == 1 and smooth:
+                    y_values = moving_average(y_values)
+                y_values = numpy.log(y_values)
                 show_legend = row_id == 0 and col_id == 0
                 scatter = go.Scatter(
                     x=x_values, y=y_values, name=run, legendgroup=run, line_color=color, showlegend=show_legend

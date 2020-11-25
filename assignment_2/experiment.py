@@ -35,8 +35,8 @@ def experiment_graphic_builder(
 
     color_iter = iter(COLORS)
     for run, result in results.items():
-        wrt_minimum = [numpy.abs(true_minimum - res.value) for res in result]
-        wrt_start = [res.stop_criterion for res in result]
+        wrt_minimum = [numpy.abs(true_minimum - res.value) + 1e-15 for res in result]
+        wrt_start = [res.stop_criterion + 1e-15 for res in result]
         times = [res.passed_time for res in result]
         oracle_calls = [res.oracle_calls for res in result]
         iterations = [i for i, _ in enumerate(result)]

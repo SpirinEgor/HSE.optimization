@@ -2,7 +2,7 @@ from typing import Callable
 
 import numpy
 
-from assignment_2.line_search import AbstractLineSearch
+from assignment_2.line_searches import AbstractLineSearch
 from assignment_2.oracles import AbstractOracle
 
 

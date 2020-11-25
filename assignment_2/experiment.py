@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 from assignment_2.config import COLORS
-from assignment_2.line_search import AbstractLineSearch
+from assignment_2.line_searches import AbstractLineSearch
 from assignment_2.optimize import gradient_descent_optimization, OptimizationStep
 from assignment_2.oracles import AbstractOracle
 

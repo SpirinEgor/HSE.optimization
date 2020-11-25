@@ -5,7 +5,7 @@ from time import time
 import numpy
 
 from assignment_2.config import Config
-from assignment_2.line_search import (
+from assignment_2.line_searches import (
     AbstractLineSearch,
     GoldenLineSearch,
     BrentLineSearch,

@@ -1,7 +1,7 @@
 import numpy
 from scipy.optimize.linesearch import line_search
 
-from assignment_2.line_search import AbstractLineSearch, ArmijoLineSearch
+from assignment_2.line_searches import AbstractLineSearch, ArmijoLineSearch
 from assignment_2.oracles import AbstractOracle
 
 

@@ -7,18 +7,14 @@ from assignment_2.oracles import AbstractOracle
 
 
 class NesterovLineSearch(AbstractLineSearch):
-    def __init__(self, c: float, max_iter: int, start_point: int):
-        super().__init__()
-        self._c = c
-        self._max_iter = max_iter
-        self._start_point = start_point
+    name: str = "nesterov"
 
     def get_alpha(self, function: Callable, direction: numpy.ndarray) -> numpy.float:
-        alpha = self._start_point
+        alpha = self._config.bracket_right
         zero_value = function(0)
         direction = (direction * direction).sum()
-        for _ in range(self._max_iter):
-            if function(alpha) <= zero_value - self._c * alpha * direction:
+        for _ in range(self._config.max_iter_line_search):
+            if function(alpha) <= zero_value - self._config.nesterov_c * alpha * direction:
                 break
             alpha /= 2
         return alpha

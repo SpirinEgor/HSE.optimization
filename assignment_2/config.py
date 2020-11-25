@@ -3,17 +3,17 @@ from dataclasses import dataclass
 
 @dataclass
 class Config:
-    data_folder = "../data"
+    data_folder: str = "../data"
 
-    tol = 1e-8
-    max_iter = 10_000
+    tol: float = 1e-8
+    max_iter: int = 10_000
 
-    bracket_left = 0
-    bracket_right = 100
-    iter_line_search = 1000
-    armijo_c = 0.5
-    nesterov_c = 0.5
-    wolfe_second_c = 0.9
+    bracket_left: int = 0
+    bracket_right: int = 100
+    max_iter_line_search: int = 1000
+    armijo_c: float = 0.5
+    nesterov_c: float = 0.5
+    wolfe_second_c: float = 0.9
 
 
 # https://community.plotly.com/t/plotly-colours-list/11730

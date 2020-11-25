@@ -3,10 +3,16 @@ from typing import Callable
 
 import numpy
 
+from assignment_2.config import Config
 from assignment_2.oracles import AbstractOracle
 
 
 class AbstractLineSearch(ABC):
+    name: str = None
+
+    def __init__(self, config: Config):
+        self._config = config
+
     @staticmethod
     def _get_minimization_function(
         oracle: AbstractOracle, cur_point: numpy.ndarray, direction: numpy.ndarray
@@ -17,15 +23,11 @@ class AbstractLineSearch(ABC):
         return minimization_function
 
     @staticmethod
-    def _get_grad_function(
-        oracle: AbstractOracle, cur_point: numpy.ndarray, direction: numpy.ndarray
-    ) -> Callable:
+    def _get_grad_function(oracle: AbstractOracle, cur_point: numpy.ndarray, direction: numpy.ndarray) -> Callable:
         def grad_function(alpha: numpy.float) -> numpy.ndarray:
             return oracle.grad(cur_point + alpha * direction)
 
         return grad_function
 
-    def __call__(
-        self, oracle: AbstractOracle, cur_point: numpy.ndarray, direction: numpy.ndarray
-    ) -> numpy.float:
+    def __call__(self, oracle: AbstractOracle, cur_point: numpy.ndarray, direction: numpy.ndarray) -> float:
         raise NotImplementedError()

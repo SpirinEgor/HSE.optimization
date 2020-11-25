@@ -6,17 +6,13 @@ from assignment_2.oracles import AbstractOracle
 
 
 class BrentLineSearch(AbstractLineSearch):
-    def __init__(self, a: float, c: float, tol: float, max_iter: int):
-        super().__init__()
-        self._bracket = (a, c)
-        self._tol = tol
-        self._max_iter = max_iter
+    name: str = "brent"
 
-    def __call__(self, oracle: AbstractOracle, cur_point: numpy.ndarray, direction: numpy.ndarray) -> numpy.float:
+    def __call__(self, oracle: AbstractOracle, cur_point: numpy.ndarray, direction: numpy.ndarray) -> float:
         minimization_function = self._get_minimization_function(oracle, cur_point, direction)
         return brent(
             minimization_function,
-            brack=self._bracket,
-            tol=self._tol,
-            maxiter=self._max_iter,
+            brack=(self._config.bracket_left, self._config.bracket_right),
+            tol=self._config.tol,
+            maxiter=self._config.max_iter_line_search,
         )

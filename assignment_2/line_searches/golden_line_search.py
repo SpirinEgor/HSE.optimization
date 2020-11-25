@@ -8,21 +8,17 @@ from assignment_2.oracles import AbstractOracle
 
 
 class GoldenLineSearch(AbstractLineSearch):
-    def __init__(self, a: numpy.float, b: numpy.float, tol: float, max_iter: int):
-        self._a = min(a, b)
-        self._b = max(a, b)
-        self._tol = tol
-        self._max_iter = max_iter
+    name: str = "golden"
 
     def golden(self, function: Callable) -> numpy.float:
-        left, right = self._a, self._b
+        left, right = self._config.bracket_left, self._config.bracket_right
         step = 2 - golden
-        x1 = self._a + step * (right - left)
-        x2 = self._b - step * (right - left)
+        x1 = left + step * (right - left)
+        x2 = right - step * (right - left)
         f_x1 = function(x1)
         f_x2 = function(x2)
-        for _ in range(self._max_iter):
-            if x2 - x1 < self._tol:
+        for _ in range(self._config.max_iter_line_search):
+            if x2 - x1 < self._config.tol:
                 break
             if f_x1 < f_x2:
                 right = x2

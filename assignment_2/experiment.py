@@ -7,7 +7,7 @@ from plotly.subplots import make_subplots
 
 from assignment_2.config import COLORS
 from assignment_2.line_searches import AbstractLineSearch
-from assignment_2.optimize import gradient_descent_optimization, OptimizationStep
+from assignment_2.optimizers import AbstractOptimizer, OptimizationStep
 from assignment_2.oracles import AbstractOracle
 
 
@@ -56,18 +56,16 @@ def experiment_graphic_builder(
     return figure
 
 
-def gradient_descent_experiment(
+def experiment_runner(
     oracle: AbstractOracle,
-    line_searches: List[Tuple[str, AbstractLineSearch]],
+    line_searches: List[AbstractLineSearch],
+    optimizer: AbstractOptimizer,
     start_point: numpy.ndarray,
-    tol: float,
-    max_iter: int,
 ) -> Dict[str, List[OptimizationStep]]:
     results = {}
-    for name, line_search in line_searches:
-        print(f"Run gradient descent optimization for {name}...")
+    for line_search in line_searches:
+        print(f"Run {optimizer.name} optimization for {line_search.name}...")
         start_time = time()
-        results[name] = gradient_descent_optimization(oracle, line_search, start_point, tol, max_iter)
+        results[line_search.name] = optimizer.optimize(oracle, line_search, start_point)
         print(f"Done in {time() - start_time} ms")
-
     return results

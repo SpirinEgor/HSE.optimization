@@ -9,6 +9,7 @@ Matrix = Union[numpy.ndarray, csr_matrix]
 
 class AbstractOracle(ABC):
     _call_counter = 0
+    name: str = None
 
     def __init__(self, x: Matrix, y: numpy.ndarray):
         self._x = x

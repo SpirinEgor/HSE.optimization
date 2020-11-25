@@ -19,7 +19,7 @@ class NewtonCholeskyOptimizer(AbstractOptimizer):
     def reset_state(self):
         self._tau = self._default_tau
 
-    def _get_direction(self, last_point: OptimizationStep) -> numpy.ndarray:
+    def _get_direction(self, oracle: AbstractOracle, last_point: OptimizationStep) -> numpy.ndarray:
         is_tau_changed = False
         while True:
             try:

@@ -33,9 +33,15 @@ class LogisticRegressionOracle(AbstractOracle):
         return (logit - self._y) @ self._x / self._n_samples
 
     def _get_hessian(self, logit: numpy.ndarray) -> numpy.ndarray:
+        logit = (logit * (1 - logit)).reshape(-1, 1)
+        if isinstance(self._x_t, numpy.ndarray):
+            return self._x_t @ (self._x * logit) / self._n_samples
+        else:
+            return self._x_t @ (self._x.multiply(logit)) / self._n_samples
+
+    def _get_hessian_dot_vector(self, logit: numpy.ndarray, d: numpy.ndarray) -> numpy.ndarray:
         logit = logit * (1 - logit)
-        diag = numpy.diag(logit)
-        return (self._x_t @ diag @ self._x) / self._n_samples
+        return ((self._x @ d) * logit) @ self._x / self._n_samples
 
     # ========== Oracle Interface ==========
 
@@ -53,7 +59,7 @@ class LogisticRegressionOracle(AbstractOracle):
 
     def hessian_vec_product(self, weights: numpy.ndarray, d: numpy.ndarray) -> numpy.ndarray:
         self._call_counter += 1
-        return self._get_hessian(expit(self._x.dot(weights))).dot(d)
+        return self._get_hessian_dot_vector(expit(self._x.dot(weights)), d)
 
     def fuse_value_grad(self, weights: numpy.ndarray) -> Tuple[numpy.float, numpy.ndarray]:
         self._call_counter += 1
@@ -73,5 +79,5 @@ class LogisticRegressionOracle(AbstractOracle):
         return (
             self._get_loss(logit),
             self._get_grad(logit),
-            self._get_hessian(logit).dot(d),
+            self._get_hessian_dot_vector(logit, d),
         )

@@ -35,14 +35,14 @@ class AbstractOptimizer(ABC):
             if points[-1].stop_criterion <= self._config.tol:
                 break
             # Calculate step size
-            direction = self._get_direction(points[-1])
+            direction = self._get_direction(oracle, points[-1])
             step_size = line_search(oracle, points[-1].point, direction)
             # Calculate next point
             next_point = points[-1].point + step_size * direction
             points.append(self._aggregate_optimization_step(oracle, next_point, time() - start_time, start_grad_norm))
         return points
 
-    def _get_direction(self, last_point: OptimizationStep) -> numpy.ndarray:
+    def _get_direction(self, oracle: AbstractOracle, last_point: OptimizationStep) -> numpy.ndarray:
         raise NotImplementedError()
 
     def _aggregate_optimization_step(

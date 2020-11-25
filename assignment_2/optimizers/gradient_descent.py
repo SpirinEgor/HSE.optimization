@@ -9,7 +9,7 @@ from assignment_2.oracles import AbstractOracle
 class GradientDescentOptimizer(AbstractOptimizer):
     name = "gradient descent"
 
-    def _get_direction(self, last_point: OptimizationStep) -> numpy.ndarray:
+    def _get_direction(self, oracle: AbstractOracle, last_point: OptimizationStep) -> numpy.ndarray:
         return -last_point.grad
 
     def _aggregate_optimization_step(

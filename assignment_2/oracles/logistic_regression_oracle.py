@@ -33,15 +33,15 @@ class LogisticRegressionOracle(AbstractOracle):
         return (logit - self._y) @ self._x / self._n_samples
 
     def _get_hessian(self, logit: numpy.ndarray) -> numpy.ndarray:
-        logit = (logit * (1 - logit)).reshape(-1, 1)
+        logit = (logit * (1 - logit)).reshape(-1, 1) / self._n_samples
         if isinstance(self._x_t, numpy.ndarray):
             return self._x_t @ (self._x * logit) / self._n_samples
         else:
-            return self._x_t @ (self._x.multiply(logit)) / self._n_samples
+            return (self._x_t @ (self._x.multiply(logit))).toarray()
 
     def _get_hessian_dot_vector(self, logit: numpy.ndarray, d: numpy.ndarray) -> numpy.ndarray:
-        logit = logit * (1 - logit)
-        return ((self._x @ d) * logit) @ self._x / self._n_samples
+        logit = logit * (1 - logit) / self._n_samples
+        return ((self._x @ d) * logit) @ self._x
 
     # ========== Oracle Interface ==========
 

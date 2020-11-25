@@ -7,12 +7,17 @@ from assignment_1.optimize import BrentNumericalRecipes, OptimizeResult
 
 # Требуется реализовать метод: который будет находить минимум функции на отрезке [a,b]
 def optimize(
-        oracle: Callable[[float], Tuple[float, float]], a: float, b: float, eps: float = 1e-8,
-        optimizer_params: Dict = None
+    oracle: Callable[[float], Tuple[float, float]],
+    a: float,
+    b: float,
+    eps: float = 1e-8,
+    optimizer_params: Dict = None,
 ) -> numpy.ndarray:
     if optimizer_params is None:
         optimizer_params = {}
-    optimize_function = BrentNumericalRecipes(**optimizer_params).get_optimize_function()
+    optimize_function = BrentNumericalRecipes(
+        **optimizer_params
+    ).get_optimize_function()
     optimize_result: OptimizeResult = optimize_function(oracle, a, b, eps)
     return numpy.array(optimize_result.x_min)
 

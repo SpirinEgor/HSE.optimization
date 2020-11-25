@@ -28,12 +28,18 @@ class TestOracleDerivatives(unittest.TestCase, ABC):
         for i in range(self.N_TRIALS):
             with self.subTest(i=i):
                 d = numpy.random.rand(self.N_FEATURES)
-                eps = numpy.sqrt(eps_machine) * (1 + numpy.linalg.norm(w)) / numpy.linalg.norm(d)
+                eps = (
+                    numpy.sqrt(eps_machine)
+                    * (1 + numpy.linalg.norm(w))
+                    / numpy.linalg.norm(d)
+                )
 
-                gradient = d @ self.oracle.grad(w)
-                approx_value = (self.oracle.value(w + eps * d) - self.oracle.value(w - eps * d)) / (2 * eps)
+                gradient = (self.oracle.grad(w) * d).sum()
+                approx_value = (
+                    self.oracle.value(w + eps * d) - self.oracle.value(w - eps * d)
+                ) / (2 * eps)
 
-                numpy.testing.assert_allclose(approx_value, gradient[0], atol=self.ATOL)
+                numpy.testing.assert_allclose(approx_value, gradient, atol=self.ATOL)
 
     def test_hessian_calculation(self):
         w = numpy.random.randn(self.N_FEATURES)
@@ -41,13 +47,20 @@ class TestOracleDerivatives(unittest.TestCase, ABC):
         for i in range(self.N_TRIALS):
             with self.subTest(i=i):
                 d = numpy.random.rand(self.N_FEATURES)
-                eps = numpy.sqrt(eps_machine) * (1 + numpy.linalg.norm(w)) / numpy.linalg.norm(d)
+                eps = (
+                    numpy.sqrt(eps_machine)
+                    * (1 + numpy.linalg.norm(w))
+                    / numpy.linalg.norm(d)
+                )
 
                 hessian_vec_products = self.oracle.hessian_vec_product(w, d)
-                approx_value = (self.oracle.grad(w + eps * d) - self.oracle.grad(w - eps * d)) / (2 * eps)
+                approx_value = (
+                    self.oracle.grad(w + eps * d) - self.oracle.grad(w - eps * d)
+                ) / (2 * eps)
+                numpy.testing.assert_allclose(
+                    approx_value, hessian_vec_products, atol=self.ATOL
+                )
 
-                numpy.testing.assert_allclose(approx_value, hessian_vec_products, atol=self.ATOL)
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

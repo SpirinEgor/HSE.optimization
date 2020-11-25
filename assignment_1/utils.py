@@ -22,7 +22,9 @@ def linear_approximation(x1: float, y1: float, x2: float, y2: float) -> float:
     return x3
 
 
-def get_derivative_in_point(f: Callable[[float], float], x: float, delta: float = 1e-8) -> float:
+def get_derivative_in_point(
+    f: Callable[[float], float], x: float, delta: float = 1e-8
+) -> float:
     return (f(x + delta) - f(x)) / delta
 
 

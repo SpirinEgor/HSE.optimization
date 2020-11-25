@@ -9,8 +9,7 @@ LINE_DELIMITER = "=" * 100
 
 
 def _round_by_epsilon(number: float, epsilon: float) -> float:
-    """Assume epsilon=1e-x
-    """
+    """Assume epsilon=1e-x"""
     eps = int(numpy.log10(epsilon))
     return round(number, -eps)
 
@@ -24,14 +23,18 @@ def test_optimize(brent: IBrent, params: OptimizeParameters, oracle: Oracle):
     x_min = _round_by_epsilon(optimize_result.x_min, oracle.get_eps())
     x_min_true = oracle.get_x_min()
     error = numpy.abs(x_min - oracle.get_x_min())
-    error = 0 if error < oracle.get_eps() else _round_by_epsilon(error, oracle.get_eps())
+    error = (
+        0 if error < oracle.get_eps() else _round_by_epsilon(error, oracle.get_eps())
+    )
     print(LINE_DELIMITER)
-    print(f"Optimized function: {oracle.get_name()}\n"
-          f"Reached minimum: x={x_min} (f(x), f'(x) = {oracle_function(x_min)})\n"
-          f"   True minimum: x={x_min_true} (f(x), f'(x) = {oracle_function(x_min_true)})\n"
-          f"Error: {error}\n"
-          f"Number of calls to the oracle: {count_call_wrapper.get_number_of_calls()}\n"
-          f"Optimization history: {' '.join(map(str, optimize_result.optimize_history))}")
+    print(
+        f"Optimized function: {oracle.get_name()}\n"
+        f"Reached minimum: x={x_min} (f(x), f'(x) = {oracle_function(x_min)})\n"
+        f"   True minimum: x={x_min_true} (f(x), f'(x) = {oracle_function(x_min_true)})\n"
+        f"Error: {error}\n"
+        f"Number of calls to the oracle: {count_call_wrapper.get_number_of_calls()}\n"
+        f"Optimization history: {' '.join(map(str, optimize_result.optimize_history))}"
+    )
     print(LINE_DELIMITER)
 
 
@@ -46,7 +49,7 @@ def main():
         (OptimizeParameters(0, 2), continuous.Function5()),
         (OptimizeParameters(-10, 10), continuous.Function6()),
         (OptimizeParameters(0, 10), continuous.Function10()),
-        (OptimizeParameters(-5, 5), continuous.Function15())
+        (OptimizeParameters(-5, 5), continuous.Function15()),
     ]
 
     max_iterations = 20

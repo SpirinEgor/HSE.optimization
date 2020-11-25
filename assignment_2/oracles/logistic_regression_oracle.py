@@ -1,52 +1,75 @@
+from typing import Tuple
+
 import numpy
 from scipy.special import expit
+from sklearn.linear_model import LogisticRegression
 
 from assignment_2.oracles import AbstractOracle
+from assignment_2.oracles.abstract_oracle import Matrix
 
 
 class LogisticRegressionOracle(AbstractOracle):
     _eps = 1e-10
 
-    def __init__(self, x: numpy.ndarray, y: numpy.ndarray):
+    def __init__(self, x: Matrix, y: numpy.ndarray):
         super().__init__(x, y)
-        self._y_t = self._y.T
         self._x_t = self._x.T
 
+    def get_true_minimum(self, tol: float, max_iter: float) -> float:
+        sklearn_logit_reg = LogisticRegression(
+            tol=tol, max_iter=max_iter, random_state=7, fit_intercept=False, penalty="none"
+        )
+        sklearn_logit_reg.fit(self._x, self._y)
+        minimum_point = sklearn_logit_reg.coef_[0]
+        return self.value(minimum_point)
+
+    # ========== Logistic Regression Calculations ==========
+
+    def _get_loss(self, logit: numpy.ndarray) -> numpy.float:
+        return -numpy.mean(numpy.log(numpy.where(self._y != 0, logit + self._eps, 1 - logit + self._eps)))
+
+    def _get_grad(self, logit: numpy.ndarray) -> numpy.ndarray:
+        return (logit - self._y) @ self._x / self._n_samples
+
+    def _get_hessian(self, logit: numpy.ndarray) -> numpy.ndarray:
+        logit = logit * (1 - logit)
+        return self._x_t @ (self._x * logit.reshape(-1, 1)) / self._n_samples
+
+    # ========== Oracle Interface ==========
+
     def value(self, weights: numpy.ndarray) -> numpy.float:
-        weights = self._save_weights_use(weights)
-
-        z = self._x @ weights
-        logit = expit(z)
-        loss = -(
-                self._y_t @ numpy.log(logit + self._eps) +
-                (1 - self._y_t) @ numpy.log(1 - logit + self._eps)
-        ) / self._n_samples
-        loss = loss[0, 0]
-
-        assert isinstance(loss, numpy.float)
-        return loss
+        self._call_counter += 1
+        return self._get_loss(expit(self._x.dot(weights)))
 
     def grad(self, weights: numpy.ndarray) -> numpy.ndarray:
-        weights = self._save_weights_use(weights)
-
-        logit = expit(self._x @ weights)
-        result = self._x_t @ (logit - self._y) / self._n_samples
-
-        assert weights.shape == result.shape
-        return result
+        self._call_counter += 1
+        return self._get_grad(expit(self._x.dot(weights)))
 
     def hessian(self, weights: numpy.ndarray) -> numpy.ndarray:
-        weights = self._save_weights_use(weights)
-
-        logit = expit(self._x @ weights)[:, 0]
-        diag_term = numpy.diag(logit * (1 - logit))
-        result = self._x_t @ diag_term @ self._x / self._n_samples
-
-        correct_shape = (weights.shape[0], weights.shape[0])
-        assert result.shape == correct_shape
-        return result
+        self._call_counter += 1
+        return self._get_hessian(expit(self._x.dot(weights)))
 
     def hessian_vec_product(self, weights: numpy.ndarray, d: numpy.ndarray) -> numpy.ndarray:
-        d = self._save_weights_use(d)
-        hessian = self.hessian(weights)
-        return hessian.dot(d)
+        self._call_counter += 1
+        return self._get_hessian(expit(self._x.dot(weights))).dot(d)
+
+    def fuse_value_grad(self, weights: numpy.ndarray) -> Tuple[numpy.float, numpy.ndarray]:
+        self._call_counter += 1
+        logit = expit(self._x.dot(weights))
+        return self._get_loss(logit), self._get_grad(logit)
+
+    def fuse_value_grad_hessian(self, weights: numpy.ndarray) -> Tuple[numpy.float, numpy.ndarray, numpy.ndarray]:
+        self._call_counter += 1
+        logit = expit(self._x.dot(weights))
+        return self._get_loss(logit), self._get_grad(logit), self._get_hessian(logit)
+
+    def fuse_value_grad_hessian_vec_product(
+        self, weights: numpy.ndarray, d: numpy.ndarray
+    ) -> Tuple[numpy.float, numpy.ndarray, numpy.ndarray]:
+        self._call_counter += 1
+        logit = expit(self._x.dot(weights))
+        return (
+            self._get_loss(logit),
+            self._get_grad(logit),
+            self._get_hessian(logit).dot(d),
+        )

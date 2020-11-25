@@ -10,8 +10,8 @@ __all__ = ["Function2", "Function5", "Function6", "Function10", "Function15"]
 
 
 class Function2(Oracle):
-    """Problem02: http://infinity77.net/global_optimization/test_functions_1d.html
-    """
+    """Problem02: http://infinity77.net/global_optimization/test_functions_1d.html"""
+
     _name = "sin(x) + sin(x * 10 / 3)"
     _x_min = 5.145735
     _f_x_min = -1.899599
@@ -26,12 +26,13 @@ class Function2(Oracle):
     def get_oracle(self) -> Callable[[float], Tuple[float, float]]:
         def f(x):
             return self._f(x), get_derivative_in_point(self._f, x)
+
         return f
 
 
 class Function5(Oracle):
-    """Problem05: http://infinity77.net/global_optimization/test_functions_1d.html
-    """
+    """Problem05: http://infinity77.net/global_optimization/test_functions_1d.html"""
+
     _name = "-(1.4 - 3x) * sin(18x)"
     _x_min = 0.96609
     _f_x_min = -1.48907
@@ -46,12 +47,13 @@ class Function5(Oracle):
     def get_oracle(self) -> Callable[[float], Tuple[float, float]]:
         def f(x):
             return self._f(x), get_derivative_in_point(self._f, x)
+
         return f
 
 
 class Function6(Oracle):
-    """Problem06: http://infinity77.net/global_optimization/test_functions_1d.html
-    """
+    """Problem06: http://infinity77.net/global_optimization/test_functions_1d.html"""
+
     _name = "-[x + sin(x)] * e^{-x^2}"
     _x_min = 0.67956
     _f_x_min = -0.824239
@@ -66,12 +68,13 @@ class Function6(Oracle):
     def get_oracle(self) -> Callable[[float], Tuple[float, float]]:
         def f(x):
             return self._f(x), get_derivative_in_point(self._f, x)
+
         return f
 
 
 class Function10(Oracle):
-    """Problem10: http://infinity77.net/global_optimization/test_functions_1d.html
-    """
+    """Problem10: http://infinity77.net/global_optimization/test_functions_1d.html"""
+
     _name = "-x * sin(x)"
     _x_min = 7.9787
     _f_x_min = -7.916727
@@ -84,12 +87,13 @@ class Function10(Oracle):
     def get_oracle(self) -> Callable[[float], Tuple[float, float]]:
         def f(x):
             return self._f(x), get_derivative_in_point(self._f, x)
+
         return f
 
 
 class Function15(Oracle):
-    """Problem15: http://infinity77.net/global_optimization/test_functions_1d.html
-    """
+    """Problem15: http://infinity77.net/global_optimization/test_functions_1d.html"""
+
     _name = "(x^2 - 5x + 6) / (x^2 + 1)"
     _x_min = 2.41422
     _f_x_min = -0.03553
@@ -102,4 +106,5 @@ class Function15(Oracle):
     def get_oracle(self) -> Callable[[float], Tuple[float, float]]:
         def f(x):
             return self._f(x), get_derivative_in_point(self._f, x)
+
         return f

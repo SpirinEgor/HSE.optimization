@@ -1,6 +1,6 @@
 from abc import ABC
 from time import time
-from typing import List
+from typing import List, Optional
 
 import numpy
 
@@ -16,14 +16,18 @@ class AbstractOptimizer(ABC):
     def __init__(self, config: Config):
         self._config = config
 
+    def reset_state(self):
+        pass
+
     def optimize(
         self, oracle: AbstractOracle, line_search: AbstractLineSearch, start_point: numpy.ndarray
     ) -> List[OptimizationStep]:
         oracle.reset_call_counter()
+        line_search.reset_state()
+        self.reset_state()
 
-        start_value, start_grad = oracle.fuse_value_grad(start_point)
-        start_grad_norm = (start_grad * start_grad).sum()
-        points = [OptimizationStep(start_point, start_value, start_grad, 0, oracle.n_calls, 1)]
+        points = [self._aggregate_optimization_step(oracle, start_point, 0)]
+        start_grad_norm = (points[-1].grad * points[-1].grad).sum()
 
         start_time = time()
         for n_iter in range(self._config.max_iter):
@@ -46,6 +50,6 @@ class AbstractOptimizer(ABC):
         oracle: AbstractOracle,
         new_point: numpy.ndarray,
         passed_time: float,
-        start_grad_norm: numpy.ndarray,
+        start_grad_norm: Optional[numpy.ndarray] = None,
     ) -> OptimizationStep:
         raise NotImplementedError()

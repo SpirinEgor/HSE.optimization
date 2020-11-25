@@ -1,7 +1,8 @@
+from typing import Optional
+
 import numpy
 
-from assignment_2.optimizers.abstract_optimizer import AbstractOptimizer
-from assignment_2.optimizers.optimization_step import OptimizationStep
+from assignment_2.optimizers import AbstractOptimizer, OptimizationStep
 from assignment_2.oracles import AbstractOracle
 
 
@@ -12,8 +13,12 @@ class GradientDescentOptimizer(AbstractOptimizer):
         return -last_point.grad
 
     def _aggregate_optimization_step(
-        self, oracle: AbstractOracle, new_point: numpy.ndarray, passed_time: float, start_grad_norm: numpy.ndarray
+        self,
+        oracle: AbstractOracle,
+        new_point: numpy.ndarray,
+        passed_time: float,
+        start_grad_norm: Optional[numpy.ndarray] = None,
     ) -> OptimizationStep:
         new_value, new_grad = oracle.fuse_value_grad(new_point)
-        stop_criterion = (new_grad * new_grad).sum() / start_grad_norm
+        stop_criterion = 1 if start_grad_norm is None else (new_grad * new_grad).sum() / start_grad_norm
         return OptimizationStep(new_point, new_value, new_grad, passed_time, oracle.n_calls, stop_criterion)

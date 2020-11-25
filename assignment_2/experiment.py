@@ -1,5 +1,5 @@
 from time import time
-from typing import List, Dict, Tuple, Iterable
+from typing import List, Dict, Iterable
 
 import numpy
 import plotly.graph_objects as go
@@ -64,7 +64,7 @@ def experiment_runner(
 ) -> Dict[str, List[OptimizationStep]]:
     results = {}
     for line_search in line_searches:
-        print(f"Run {optimizer.name} optimization for {line_search.name}...")
+        print(f"Run {optimizer.name} optimization with {line_search.name} line search...")
         start_time = time()
         results[line_search.name] = optimizer.optimize(oracle, line_search, start_point)
         print(f"Done in {time() - start_time} ms")

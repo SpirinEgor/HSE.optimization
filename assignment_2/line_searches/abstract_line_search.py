@@ -29,5 +29,8 @@ class AbstractLineSearch(ABC):
 
         return grad_function
 
+    def reset_state(self):
+        pass
+
     def __call__(self, oracle: AbstractOracle, cur_point: numpy.ndarray, direction: numpy.ndarray) -> float:
         raise NotImplementedError()

@@ -9,8 +9,8 @@ class Config:
     max_iter: int = 10_000
 
     bracket_left: int = 0
-    bracket_right: int = 100
-    max_iter_line_search: int = 1000
+    bracket_right: int = 10
+    max_iter_line_search: int = 100
     armijo_c: float = 0.5
     nesterov_c: float = 0.5
     wolfe_second_c: float = 0.9

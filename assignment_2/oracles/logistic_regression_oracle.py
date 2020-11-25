@@ -34,7 +34,8 @@ class LogisticRegressionOracle(AbstractOracle):
 
     def _get_hessian(self, logit: numpy.ndarray) -> numpy.ndarray:
         logit = logit * (1 - logit)
-        return self._x_t @ (self._x * logit.reshape(-1, 1)) / self._n_samples
+        diag = numpy.diag(logit)
+        return (self._x_t @ diag @ self._x) / self._n_samples
 
     # ========== Oracle Interface ==========
 

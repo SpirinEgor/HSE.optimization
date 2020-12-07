@@ -3,9 +3,9 @@ from typing import Optional
 import numpy
 from scipy.linalg import cho_factor, LinAlgError, cho_solve
 
-from assignment_2.config import Config
-from assignment_2.optimizers import AbstractOptimizer, OptimizationStep
-from assignment_2.oracles import AbstractOracle
+from assignment_2_3.config import Config
+from assignment_2_3.optimizers import AbstractOptimizer, OptimizationStep
+from assignment_2_3.oracles import AbstractOracle
 
 
 class NewtonCholeskyOptimizer(AbstractOptimizer):

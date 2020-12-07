@@ -3,8 +3,8 @@ from typing import Callable
 
 import numpy
 
-from assignment_2.config import Config
-from assignment_2.oracles import AbstractOracle
+from assignment_2_3.config import Config
+from assignment_2_3.oracles import AbstractOracle
 
 
 class AbstractLineSearch(ABC):

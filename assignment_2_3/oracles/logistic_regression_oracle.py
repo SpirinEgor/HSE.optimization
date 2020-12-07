@@ -4,8 +4,8 @@ import numpy
 from scipy.special import expit
 from sklearn.linear_model import LogisticRegression
 
-from assignment_2.oracles import AbstractOracle
-from assignment_2.oracles.abstract_oracle import Matrix
+from assignment_2_3.oracles import AbstractOracle
+from assignment_2_3.oracles.abstract_oracle import Matrix
 
 
 class LogisticRegressionOracle(AbstractOracle):

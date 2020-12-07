@@ -3,8 +3,8 @@ from typing import Callable
 import numpy
 from scipy.constants import golden
 
-from assignment_2.line_searches import AbstractLineSearch
-from assignment_2.oracles import AbstractOracle
+from assignment_2_3.line_searches import AbstractLineSearch
+from assignment_2_3.oracles import AbstractOracle
 
 
 class GoldenLineSearch(AbstractLineSearch):

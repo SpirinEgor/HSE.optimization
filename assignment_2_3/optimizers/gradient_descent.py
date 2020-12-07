@@ -2,8 +2,8 @@ from typing import Optional
 
 import numpy
 
-from assignment_2.optimizers import AbstractOptimizer, OptimizationStep
-from assignment_2.oracles import AbstractOracle
+from assignment_2_3.optimizers import AbstractOptimizer, OptimizationStep
+from assignment_2_3.oracles import AbstractOracle
 
 
 class GradientDescentOptimizer(AbstractOptimizer):

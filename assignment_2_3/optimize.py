@@ -1,9 +1,9 @@
 import numpy
 
-from assignment_2.config import Config
-from assignment_2.line_searches import make_line_search
-from assignment_2.optimizers import GradientDescentOptimizer, HessianFreeNewtonOptimizer
-from assignment_2.oracles import AbstractOracle
+from assignment_2_3.config import Config
+from assignment_2_3.line_searches import make_line_search
+from assignment_2_3.optimizers import GradientDescentOptimizer, HessianFreeNewtonOptimizer
+from assignment_2_3.oracles import AbstractOracle
 
 
 def optimize(

@@ -15,6 +15,8 @@ class Config:
     nesterov_c: float = 0.5
     wolfe_second_c: float = 0.9
 
+    l_bfgs_history_size: int = 100
+
 
 # https://community.plotly.com/t/plotly-colours-list/11730
 COLORS = [

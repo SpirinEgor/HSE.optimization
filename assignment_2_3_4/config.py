@@ -17,6 +17,9 @@ class Config:
 
     l_bfgs_history_size: int = 100
 
+    lasso_lambda: float = 0.5
+    lasso_start_l: float = 1.0
+
 
 # https://community.plotly.com/t/plotly-colours-list/11730
 COLORS = [

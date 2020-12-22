@@ -3,7 +3,7 @@ from abc import ABC
 
 import numpy
 
-from assignment_2_3.oracles import LogisticRegressionOracle, AbstractOracle
+from assignment_2_3_4.oracles import LogisticRegressionOracle, AbstractOracle
 
 
 class TestOracleDerivatives(unittest.TestCase, ABC):

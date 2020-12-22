@@ -41,37 +41,22 @@ class BrentMomo(IBrent):
 
             # first parabola
             if first_min != second_min and df_first_min != df_second_min:
-                possible_min = linear_approximation(
-                    first_min, df_first_min, second_min, df_second_min
-                )
-                if (
-                    a + eps <= possible_min <= c - eps
-                    and numpy.abs(possible_min - first_min) < temp_step / 2
-                ):
+                possible_min = linear_approximation(first_min, df_first_min, second_min, df_second_min)
+                if a + eps <= possible_min <= c - eps and numpy.abs(possible_min - first_min) < temp_step / 2:
                     next_min = possible_min
                     current_step = numpy.abs(next_min - first_min)
 
             # second parabola
             if first_min != third_min and df_first_min != df_third_min:
-                possible_min = linear_approximation(
-                    first_min, df_first_min, third_min, df_third_min
-                )
-                if (
-                    a + eps <= possible_min <= c - eps
-                    and numpy.abs(possible_min - first_min) < previous_step / 2
-                ):
-                    if (
-                        next_min is None
-                        or numpy.abs(possible_min - first_min) < current_step
-                    ):
+                possible_min = linear_approximation(first_min, df_first_min, third_min, df_third_min)
+                if a + eps <= possible_min <= c - eps and numpy.abs(possible_min - first_min) < previous_step / 2:
+                    if next_min is None or numpy.abs(possible_min - first_min) < current_step:
                         next_min = possible_min
                         current_step = numpy.abs(next_min - first_min)
 
             # bisect
             if next_min is None:
-                next_min = (
-                    (a + first_min) / 2 if df_first_min > 0 else (first_min + c) / 2
-                )
+                next_min = (a + first_min) / 2 if df_first_min > 0 else (first_min + c) / 2
                 current_step = numpy.abs(next_min - first_min)
 
             # check min step size
@@ -110,11 +95,7 @@ class BrentMomo(IBrent):
                         f_next_min,
                         df_next_min,
                     )
-                elif (
-                    f_next_min <= f_third_min
-                    or third_min == first_min
-                    or third_min == second_min
-                ):
+                elif f_next_min <= f_third_min or third_min == first_min or third_min == second_min:
                     third_min, f_third_min, df_third_min = (
                         next_min,
                         f_next_min,

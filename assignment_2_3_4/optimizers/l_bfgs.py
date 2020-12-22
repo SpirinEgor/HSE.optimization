@@ -4,9 +4,9 @@ from typing import Optional, Deque
 
 import numpy
 
-from assignment_2_3.config import Config
-from assignment_2_3.optimizers import AbstractOptimizer, OptimizationStep
-from assignment_2_3.oracles import AbstractOracle
+from assignment_2_3_4.config import Config
+from assignment_2_3_4.optimizers import AbstractOptimizer, OptimizationStep
+from assignment_2_3_4.oracles import AbstractOracle
 
 
 class LBFGSOptimizer(AbstractOptimizer):

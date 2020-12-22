@@ -4,10 +4,10 @@ from typing import List, Optional
 
 import numpy
 
-from assignment_2_3.config import Config
-from assignment_2_3.line_searches import AbstractLineSearch
-from assignment_2_3.optimizers.optimization_step import OptimizationStep
-from assignment_2_3.oracles import AbstractOracle
+from assignment_2_3_4.config import Config
+from assignment_2_3_4.line_searches import AbstractLineSearch
+from assignment_2_3_4.optimizers.optimization_step import OptimizationStep
+from assignment_2_3_4.oracles import AbstractOracle
 
 
 class AbstractOptimizer(ABC):

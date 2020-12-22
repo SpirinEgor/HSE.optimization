@@ -1,12 +1,13 @@
 from typing import Dict
 
-from assignment_2_3.config import Config
-from assignment_2_3.optimizers import (
+from assignment_2_3_4.config import Config
+from assignment_2_3_4.optimizers import (
     AbstractOptimizer,
     GradientDescentOptimizer,
     NewtonCholeskyOptimizer,
     HessianFreeNewtonOptimizer,
     LBFGSOptimizer,
+    LassoOptimizer,
 )
 
 
@@ -16,6 +17,7 @@ def make_optimizer(name: str, config: Config) -> AbstractOptimizer:
         NewtonCholeskyOptimizer.name: NewtonCholeskyOptimizer,
         HessianFreeNewtonOptimizer.name: HessianFreeNewtonOptimizer,
         LBFGSOptimizer.name: LBFGSOptimizer,
+        LassoOptimizer.name: LassoOptimizer,
     }
     if name not in known_optimizations:
         raise ValueError(f"Unknown optimizer: {name}")

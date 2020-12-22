@@ -5,10 +5,10 @@ import numpy
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from assignment_2_3.config import COLORS
-from assignment_2_3.line_searches import AbstractLineSearch
-from assignment_2_3.optimizers import AbstractOptimizer, OptimizationStep
-from assignment_2_3.oracles import AbstractOracle
+from assignment_2_3_4.config import COLORS
+from assignment_2_3_4.line_searches import AbstractLineSearch
+from assignment_2_3_4.optimizers import AbstractOptimizer, OptimizationStep
+from assignment_2_3_4.oracles import AbstractOracle
 
 
 def moving_average(array: Iterable[float], window: int = 25) -> numpy.ndarray:

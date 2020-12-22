@@ -1,7 +1,7 @@
 from typing import Dict
 
-from assignment_2_3.config import Config
-from assignment_2_3.line_searches import (
+from assignment_2_3_4.config import Config
+from assignment_2_3_4.line_searches import (
     GoldenLineSearch,
     BrentLineSearch,
     ArmijoLineSearch,

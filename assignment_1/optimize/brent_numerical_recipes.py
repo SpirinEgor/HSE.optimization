@@ -34,10 +34,7 @@ class BrentNumericalRecipes(IBrent):
             median = 0.5 * (a + c)
             tol1 = eps * abs(first_min) + self._min_tol
             tol2 = 2 * tol1
-            if (
-                abs(first_min - median) <= tol2 - 0.5 * (c - a)
-                or abs(df_first_min) <= self._min_tol
-            ):
+            if abs(first_min - median) <= tol2 - 0.5 * (c - a) or abs(df_first_min) <= self._min_tol:
                 return OptimizeResult(first_min, _history, n_iter)
 
             temp_step = previous_step
@@ -46,17 +43,9 @@ class BrentNumericalRecipes(IBrent):
             if abs(previous_step) > tol1:
                 d1 = d2 = 2 * (c - a)
                 if df_first_min != df_second_min:
-                    d1 = (
-                        (second_min - first_min)
-                        * df_first_min
-                        / (df_first_min - df_second_min)
-                    )
+                    d1 = (second_min - first_min) * df_first_min / (df_first_min - df_second_min)
                 if df_first_min != df_third_min:
-                    d2 = (
-                        (third_min - first_min)
-                        * df_first_min
-                        / (df_first_min - df_third_min)
-                    )
+                    d2 = (third_min - first_min) * df_first_min / (df_first_min - df_third_min)
                 u1 = first_min + d1
                 u2 = first_min + d2
                 is_ok1 = (a - u1) * (u1 - c) > 0 >= df_first_min * d1
@@ -73,23 +62,13 @@ class BrentNumericalRecipes(IBrent):
                         if next_min - a < tol2 or c - next_min < tol2:
                             current_step = sign(median - first_min) * tol1
                     else:
-                        current_step = (
-                            (a - first_min) / 2
-                            if df_first_min >= 0
-                            else (c - first_min) / 2
-                        )
+                        current_step = (a - first_min) / 2 if df_first_min >= 0 else (c - first_min) / 2
                 else:
-                    current_step = (
-                        (a - first_min) / 2
-                        if df_first_min >= 0
-                        else (c - first_min) / 2
-                    )
+                    current_step = (a - first_min) / 2 if df_first_min >= 0 else (c - first_min) / 2
 
             # bisect method
             else:
-                current_step = (
-                    (a - first_min) / 2 if df_first_min >= 0 else (c - first_min) / 2
-                )
+                current_step = (a - first_min) / 2 if df_first_min >= 0 else (c - first_min) / 2
 
             if abs(current_step) >= tol1:
                 next_min = first_min + current_step
@@ -128,11 +107,7 @@ class BrentNumericalRecipes(IBrent):
                         f_next_min,
                         df_next_min,
                     )
-                elif (
-                    f_next_min <= f_third_min
-                    or third_min == first_min
-                    or third_min == second_min
-                ):
+                elif f_next_min <= f_third_min or third_min == first_min or third_min == second_min:
                     third_min, f_third_min, df_third_min = (
                         next_min,
                         f_next_min,

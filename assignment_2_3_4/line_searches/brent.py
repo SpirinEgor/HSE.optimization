@@ -1,8 +1,8 @@
 import numpy
 from scipy.optimize import brent
 
-from assignment_2_3.line_searches import AbstractLineSearch
-from assignment_2_3.oracles import AbstractOracle
+from assignment_2_3_4.line_searches import AbstractLineSearch
+from assignment_2_3_4.oracles import AbstractOracle
 
 
 class BrentLineSearch(AbstractLineSearch):

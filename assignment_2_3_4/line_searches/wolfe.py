@@ -1,9 +1,9 @@
 import numpy
 from scipy.optimize.linesearch import line_search
 
-from assignment_2_3.config import Config
-from assignment_2_3.line_searches import AbstractLineSearch, ArmijoLineSearch
-from assignment_2_3.oracles import AbstractOracle
+from assignment_2_3_4.config import Config
+from assignment_2_3_4.line_searches import AbstractLineSearch, ArmijoLineSearch
+from assignment_2_3_4.oracles import AbstractOracle
 
 
 class WolfeLineSearch(AbstractLineSearch):

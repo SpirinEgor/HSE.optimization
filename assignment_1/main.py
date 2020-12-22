@@ -23,9 +23,7 @@ def test_optimize(brent: IBrent, params: OptimizeParameters, oracle: Oracle):
     x_min = _round_by_epsilon(optimize_result.x_min, oracle.get_eps())
     x_min_true = oracle.get_x_min()
     error = numpy.abs(x_min - oracle.get_x_min())
-    error = (
-        0 if error < oracle.get_eps() else _round_by_epsilon(error, oracle.get_eps())
-    )
+    error = 0 if error < oracle.get_eps() else _round_by_epsilon(error, oracle.get_eps())
     print(LINE_DELIMITER)
     print(
         f"Optimized function: {oracle.get_name()}\n"

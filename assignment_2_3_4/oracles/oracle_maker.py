@@ -1,5 +1,5 @@
-from assignment_2_3.oracles import AbstractOracle, LogisticRegressionOracle
-from assignment_2_3.data_readers import read_libsvm, read_tsv
+from assignment_2_3_4.oracles import AbstractOracle, LogisticRegressionOracle
+from assignment_2_3_4.data_readers import read_libsvm, read_tsv
 
 
 def make_oracle(

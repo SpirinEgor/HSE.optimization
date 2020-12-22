@@ -14,9 +14,7 @@ class IBrent(ABC):
         return self.brent_with_derivatives
 
     @staticmethod
-    def _init_brent_variables(
-        oracle: Callable[[float], Tuple[float, float]], a: float, c: float
-    ) -> Tuple:
+    def _init_brent_variables(oracle: Callable[[float], Tuple[float, float]], a: float, c: float) -> Tuple:
         first_min = second_min = prev_sec_min = (a + c) / 2
         f_first_min, df_first_min = oracle(first_min)
         f_second_min, df_second_min = f_first_min, df_first_min

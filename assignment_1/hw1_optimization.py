@@ -15,9 +15,7 @@ def optimize(
 ) -> numpy.ndarray:
     if optimizer_params is None:
         optimizer_params = {}
-    optimize_function = BrentNumericalRecipes(
-        **optimizer_params
-    ).get_optimize_function()
+    optimize_function = BrentNumericalRecipes(**optimizer_params).get_optimize_function()
     optimize_result: OptimizeResult = optimize_function(oracle, a, b, eps)
     return numpy.array(optimize_result.x_min)
 

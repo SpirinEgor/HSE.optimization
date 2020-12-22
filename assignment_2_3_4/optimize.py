@@ -23,7 +23,7 @@ def optimize(
     config.max_iter = max_iter
     line_search = make_line_search(line_search_method, config)
     optimizer = GradientDescentOptimizer(config)
-    optimization_results = optimizer.optimize(oracle, line_search, start_point)
+    optimization_results = optimizer.optimize(oracle, start_point, line_search)
     return optimization_results[-1].point
 
 
@@ -39,7 +39,7 @@ def hfn_optimize(
     config.max_iter = max_iter
     line_search = make_line_search(line_search_method, config)
     optimizer = HessianFreeNewtonOptimizer(config)
-    optimization_results = optimizer.optimize(oracle, line_search, start_point)
+    optimization_results = optimizer.optimize(oracle, start_point, line_search)
     return optimization_results[-1].point
 
 
@@ -51,7 +51,7 @@ def lbfgs_optimize(
     config.l_bfgs_history_size = history_size
     line_search = WolfeLineSearch(config)
     optimizer = LBFGSOptimizer(config)
-    optimization_results = optimizer.optimize(oracle, line_search, start_point)
+    optimization_results = optimizer.optimize(oracle, start_point, line_search)
     return optimization_results[-1].point
 
 
@@ -62,5 +62,5 @@ def optimize_lasso(
     config.tol = tol
     config.lasso_lambda = l1_lambda
     optimizer = LassoOptimizer(config)
-    optimization_results = optimizer.optimize(oracle, None, start_point)
+    optimization_results = optimizer.optimize(oracle, start_point)
     return optimization_results[-1].point

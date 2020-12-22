@@ -20,11 +20,19 @@ class AbstractOptimizer(ABC):
         pass
 
     def optimize(
-        self, oracle: AbstractOracle, line_search: AbstractLineSearch, start_point: numpy.ndarray
+        self, oracle: AbstractOracle, start_point: numpy.ndarray, line_search: AbstractLineSearch = None
     ) -> List[OptimizationStep]:
         oracle.reset_call_counter()
-        line_search.reset_state()
         self.reset_state()
+        if line_search is not None:
+            line_search.reset_state()
+        return self._optimize_oracle(oracle, start_point, line_search)
+
+    def _optimize_oracle(
+        self, oracle: AbstractOracle, start_point: numpy.ndarray, line_search: AbstractLineSearch = None
+    ) -> List[OptimizationStep]:
+        if line_search is None:
+            raise ValueError("LineSearch is required for default optimizer behaviour")
 
         points = [self._aggregate_optimization_step(oracle, start_point, 0)]
         start_grad_norm = (points[-1].grad * points[-1].grad).sum()

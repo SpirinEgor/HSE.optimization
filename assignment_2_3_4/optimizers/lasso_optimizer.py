@@ -11,13 +11,9 @@ from assignment_2_3_4.oracles import AbstractOracle
 class LassoOptimizer(AbstractOptimizer):
     name: str = "lasso"
 
-    def optimize(
-        self, oracle: AbstractOracle, line_search: AbstractLineSearch, start_point: numpy.ndarray
+    def _optimize_oracle(
+        self, oracle: AbstractOracle, start_point: numpy.ndarray, line_search: AbstractLineSearch = None
     ) -> List[OptimizationStep]:
-        oracle.reset_call_counter()
-        line_search.reset_state()
-        self.reset_state()
-
         points = [self._aggregate_optimization_step(oracle, start_point, 0)]
 
         cur_l = self._config.lasso_start_l

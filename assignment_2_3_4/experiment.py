@@ -66,6 +66,6 @@ def experiment_runner(
     for line_search in line_searches:
         print(f"Run {optimizer.name} optimization with {line_search.name} line search...")
         start_time = time()
-        results[line_search.name] = optimizer.optimize(oracle, line_search, start_point)
+        results[line_search.name] = optimizer.optimize(oracle, start_point, line_search)
         print(f"Done in {time() - start_time} ms")
     return results

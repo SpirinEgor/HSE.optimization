@@ -17,7 +17,7 @@ class Config:
 
     l_bfgs_history_size: int = 100
 
-    lasso_lambda: float = 0.5
+    lasso_lambda: float = 0.01
     lasso_start_l: float = 1.0
 
 

@@ -18,12 +18,16 @@ def moving_average(array: Iterable[float], window: int = 25) -> numpy.ndarray:
 
 
 def experiment_graphic_builder(
-    results: Dict[str, List[OptimizationStep]], name: str, true_minimum: float, smooth: bool = False
+    results: Dict[str, List[OptimizationStep]],
+    name: str,
+    true_minimum: float,
+    smooth: bool = False,
+    stop_criteria_formula: str = r"$\log(\frac{|\nabla F(w_k)|^2}{|\nabla F(w_0)|^2})$",
 ) -> go.Figure:
     figure = make_subplots(
         rows=3,
         cols=2,
-        column_titles=[r"$\log(|F(w_k) - F(w_*)|)$", r"$\log(\frac{|\nabla F(w_k)|^2}{|\nabla F(w_0)|^2})$"],
+        column_titles=[r"$\log(|F(w_k) - F(w_*)|)$", stop_criteria_formula],
         horizontal_spacing=0.05,
     )
     figure.update_layout(title=name, height=1000, legend={"orientation": "h"})
@@ -36,7 +40,7 @@ def experiment_graphic_builder(
     color_iter = iter(COLORS)
     for run, result in results.items():
         wrt_minimum = [numpy.abs(true_minimum - res.value) + 1e-15 for res in result]
-        wrt_start = [res.stop_criterion + 1e-15 for res in result]
+        wrt_start = [res.stop_criterion + 1e-15 for res in result[1:]]
         times = [res.passed_time for res in result]
         oracle_calls = [res.oracle_calls for res in result]
         iterations = [i for i, _ in enumerate(result)]
@@ -46,7 +50,7 @@ def experiment_graphic_builder(
             for col_id, y_values in enumerate([wrt_minimum, wrt_start]):
                 if col_id == 1 and smooth:
                     y_values = moving_average(y_values)
-                y_values = numpy.log(y_values)
+                y_values = numpy.log10(y_values)
                 show_legend = row_id == 0 and col_id == 0
                 scatter = go.Scatter(
                     x=x_values, y=y_values, name=run, legendgroup=run, line_color=color, showlegend=show_legend

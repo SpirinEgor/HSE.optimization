@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy
 from scipy.linalg import cho_factor, LinAlgError, cho_solve
 
@@ -39,10 +37,6 @@ class NewtonCholeskyOptimizer(AbstractOptimizer):
         oracle: AbstractOracle,
         new_point: numpy.ndarray,
         passed_time: float,
-        start_grad_norm: Optional[numpy.ndarray] = None,
     ) -> OptimizationStep:
         new_value, new_grad, new_hessian = oracle.fuse_value_grad_hessian(new_point)
-        stop_criterion = 1 if start_grad_norm is None else (new_grad * new_grad).sum() / start_grad_norm
-        return OptimizationStep(
-            new_point, new_value, new_grad, passed_time, oracle.n_calls, stop_criterion, new_hessian
-        )
+        return OptimizationStep(new_point, new_value, new_grad, passed_time, oracle.n_calls, hessian=new_hessian)

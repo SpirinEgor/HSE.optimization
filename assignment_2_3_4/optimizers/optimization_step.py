@@ -12,6 +12,6 @@ class OptimizationStep:
 
     passed_time: float
     oracle_calls: int
-    stop_criterion: float
+    stop_criterion: Optional[float] = 1.0
 
     hessian: Optional[numpy.ndarray] = None

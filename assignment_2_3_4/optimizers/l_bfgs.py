@@ -53,18 +53,14 @@ class LBFGSOptimizer(AbstractOptimizer):
         oracle: AbstractOracle,
         new_point: numpy.ndarray,
         passed_time: float,
-        start_grad_norm: Optional[numpy.ndarray] = None,
     ) -> OptimizationStep:
         new_value, new_grad = oracle.fuse_value_grad(new_point)
-        stop_criterion = 1
 
-        if start_grad_norm is not None:
-            assert self._last_point is not None, "call _get_direction before aggregating optimization step"
+        if self._last_point is not None:
             self._history.append(
                 self._LBFGSHistory(s=new_point - self._last_point.point, y=new_grad - self._last_point.grad)
             )
-            stop_criterion = (new_grad * new_grad).sum() / start_grad_norm
 
         if len(self._history) > self._history_size:
             self._history.popleft()
-        return OptimizationStep(new_point, new_value, new_grad, passed_time, oracle.n_calls, stop_criterion)
+        return OptimizationStep(new_point, new_value, new_grad, passed_time, oracle.n_calls)

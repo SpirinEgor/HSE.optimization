@@ -47,7 +47,8 @@ class AbstractOptimizer(ABC):
             step_size = line_search(oracle, points[-1].point, direction)
             # Calculate next point
             next_point = points[-1].point + step_size * direction
-            points.append(self._aggregate_optimization_step(oracle, next_point, time() - start_time, start_grad_norm))
+            points.append(self._aggregate_optimization_step(oracle, next_point, time() - start_time))
+            points[-1].stop_criterion = (points[-1].grad * points[-1].grad).sum() / start_grad_norm
         return points
 
     def _get_direction(self, oracle: AbstractOracle, last_point: OptimizationStep) -> numpy.ndarray:
@@ -58,6 +59,6 @@ class AbstractOptimizer(ABC):
         oracle: AbstractOracle,
         new_point: numpy.ndarray,
         passed_time: float,
-        start_grad_norm: Optional[numpy.ndarray] = None,
     ) -> OptimizationStep:
-        raise NotImplementedError()
+        new_value, new_grad = oracle.fuse_value_grad(new_point)
+        return OptimizationStep(new_point, new_value, new_grad, passed_time, oracle.n_calls)

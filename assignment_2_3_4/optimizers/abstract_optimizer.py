@@ -1,6 +1,6 @@
 from abc import ABC
 from time import time
-from typing import List, Optional
+from typing import List
 
 import numpy
 

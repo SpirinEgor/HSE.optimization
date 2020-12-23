@@ -18,10 +18,7 @@ def labels_to_zero_one_format(labels: numpy.ndarray) -> numpy.ndarray:
     unique_labels = numpy.unique(labels)
     if unique_labels.shape[0] != 2:
         raise RuntimeError(f"Can't compress labels to 0 and 1, find {unique_labels} unique labels")
-    zero_mask = labels == unique_labels[0]
-    labels[zero_mask] = 0
-    labels[~zero_mask] = 1
-    return labels.astype(numpy.short)
+    return (labels == unique_labels[0]).astype(numpy.short)
 
 
 def read_libsvm(data_path: str) -> Tuple[csr_matrix, numpy.ndarray]:

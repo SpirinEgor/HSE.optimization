@@ -9,7 +9,7 @@ from assignment_2_3_4.oracles.abstract_oracle import Matrix
 
 
 class LogisticRegressionOracle(AbstractOracle):
-    _eps = 1e-10
+    _eps = numpy.finfo(numpy.float64).eps
     name: str = "logistic regression"
 
     def __init__(self, x: Matrix, y: numpy.ndarray):
